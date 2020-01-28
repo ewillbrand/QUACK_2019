@@ -1,0 +1,72 @@
+---
+title: "Practice plotting and reshaping data"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Unicef mortality rates
+You are an employee at Unicef working to reduce neonatal mortality rates. 
+You have compiled data looking at infant mortality under age 5. 
+Rates are measured  as deaths per 1000 births for each year. 
+```{r, message = FALSE}
+library(tidyverse)
+library(wesanderson) #just a fun color palette
+mortality <- read.csv('~/Downloads/unicef-u5mr.csv',check.names=FALSE) #check.names:
+  #deals with a naming issue because 
+  #col names are numbers. 
+```
+\newpage
+You began tracking these rates in 2000. 
+Generate the plot below to compare mortality rates across countries in the year 2000. 
+Try to generate the exact plot shown including the title and axis labels. 
+Google is your friend! 
+(tips: coord_flip() will filp your bar chart. The following notation lets you call column names that are numbers  ' 2000 '. )
+
+&nbsp;
+```{r, echo=FALSE}
+
+```
+\newpage
+##comparing neonatal mortality over time. 
+Based on the data shown in the first plot, you and your team decide to focus
+interventions on three of the countries with the highest rates of neonatal mortality (Sierra Leone, Angola and Niger). 
+
+Generate the following plot to show the change in mortality rates over time for just these three countries. 
+
+(This may require some cleaning and reshaping). 
+
+&nbsp;
+
+```{r, echo = FALSE}
+
+```
+\newpage
+See if you can find a way to customize the color of your plot.
+tip: you can do this manually or with a palette (eg. brewer makes a color blind friendly palette)
+I know my boss is a fan of wes anderson so in order to get their attention I'm going to use the fun wes anderson color palette. 
+
+
+&nbsp;
+
+```{r, echo=FALSE}
+
+```
+\newpage
+Try splitting plots by country 
+```{r, echo=FALSE}
+
+```
+\newpage
+Think about what you learned last class. Come up with your own plot to visualize something interesting about this data. 
+You can focus on a specific year, country or some comparison between them. 
+
+Alternatively, use the plots we already generated but change the aesthetics (eg. the fill, colors, theme, lengend sizes). 
+
+```{r, echo = FALSE}
+
+```

@@ -1,0 +1,141 @@
+---
+
+output: html_document
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.width=4, fig.height=3,fig.align = "center")
+
+library(dplyr)
+library(ggplot2)
+
+```
+
+##Practice
+
+
+##Your turn
+
+Now it's your turn. We're going to look at the built-in R dataset showing UC Berkeley admissions of men and women from 1973, broken down by department. It comes from a lawsuit alleging a gender bias in admissions. Here you're going to figure out: were UC Berkeley admissions biased? 
+
+```{r}
+data(UCBAdmissions)
+admit <- data.frame(UCBAdmissions)
+
+```
+
+
+First, let's just look at how many men and women applied in total.
+
+```{r}
+
+
+
+```
+
+Next, let's look at the proportion of admissions by gender.
+
+```{r}
+
+
+
+
+```
+
+Ugh, the default color scheme makes 'admission' red and 'rejected' green, which is counter-intuitive. So before we go any further let's fix that (hint: `use scale_fill_manual()`). You can find color names at http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf. 
+
+
+```{r}
+
+
+
+
+```
+
+
+
+
+Looks pretty biased, but it's kind of hard to compare, because the total number of men and women who applied is different --- so the bars are different heights. So let's turn these into proportions. 
+
+```{r}
+
+
+admit <- admit %>%
+         group_by(Gender) %>%
+         mutate(Prop = Freq/sum(Freq)) 
+
+```
+
+
+
+Now plot the proportions:
+
+
+```{r}
+
+
+```
+
+
+
+
+
+Should we conclude that the admissions are biased? The answer is no -- at least, not yet. The reason is that there's a missing piece of information here, which is the admission rates by department. Let's start off with a faceted plot of all the frequencies of admission by department (colored by gender).
+
+Here we use the function *facet_wrap* to make subplots ("facets") for each department.
+
+```{r, fig.width=8,fig.height=5}
+
+
+
+
+```
+
+
+Again, because the total number of applicants of men and women varies by department, this is hard to interpret. So let's again turn each subplot into proportion instead of an overall frequency.
+
+```
+
+admit <- admit %>%
+        group_by(Dept,Gender) %>%
+        mutate(Prop=Freq/sum(Freq))
+
+
+```
+
+Now plot the proportions:
+
+```{r, fig.width=6,fig.height=3}
+
+
+```
+
+The data suddenly seem to tell an entirely different story. It seems that when you actually look at the proportion of men and women admitted to different departments, the rates of acceptance are essentially identical! This can be explained if women tend to apply to departments with lower acceptance rates. Let's demonstrate this a little more cleanly, by finding the proportion of women who applied to each department and plotting how selective those departments were overall.
+
+```{r}
+
+admit <- admit %>%
+        group_by(Dept, Admit) %>%
+        mutate(Prop = (Admit=="Admitted") * Freq) %>%
+  
+        group_by(Dept, Gender) %>%
+        mutate(Pct_Women = sum(Freq) * (Gender=="Female")) %>%
+  
+        group_by(Dept) %>%
+        mutate(Pct_Women = max(Pct_Women)/sum(Freq)) %>%
+        mutate(Prop=max(Prop)/sum(Freq))
+
+
+```
+
+So did women just apply to more selective departments?
+
+```{r}
+
+
+```
+
+
+That was the legal conclusion. See: https://en.wikipedia.org/wiki/Simpson%27s_paradox
